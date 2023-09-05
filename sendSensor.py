@@ -8,16 +8,16 @@ from machine import Pin
 sensor = dht.DHT22(Pin(13))
 led = Pin("LED", Pin.OUT)
 led.off()
-ssid = 'tws@IOT'
-password = ''
-url = ""
+ssid = '@tws.IOT'
+password = 'P@ssw0rd'
+url = "https://10.59.102.86/gita/api/v2/insertsuhu"
+max_wait = 10
 
 #connect to network
 wlan = network.WLAN(network.STA_IF)
 wlan.active(True)
 wlan.connect(ssid, password)
 
-max_wait = 10
 while max_wait > 0:
   if wlan.status() < 0 or wlan.status() >=3:
     break
@@ -41,7 +41,15 @@ while True:
     sensor.measure()
     temperature = sensor.temperature() 
     humidity = sensor.humidity()
-    response = requests.post(url, )
+    post_data = {
+      "kode": 'GBR001',
+      "lokasi": 'GBR',
+      "lantai": '3',
+      "rack": 'GBRA8',
+      "suhu": temperature,
+      "humid": humid dity      
+    }
+    response = requests.post(url, json=post_data)
     text = response.text
     print(text)
     response.close()
